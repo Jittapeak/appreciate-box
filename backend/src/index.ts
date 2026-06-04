@@ -9,7 +9,7 @@ export const graphql = {
 		},
 
 		getAllAppreciates: appreciate.getAll,
-
+		getById: appreciate.getById,
 		getByUserId: appreciate.getByUserId
 	},
 	Mutation: {

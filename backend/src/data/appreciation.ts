@@ -17,6 +17,10 @@ class AppreciateService {
 		return this.appreciates.filter(appr => appr.user_id == user_id)
 	}
 
+	getById(apprId: string): Appreciate {
+		return this.appreciates.filter(appr => appr.id == apprId)[0]
+	}
+
 	getAll(): Appreciate[] {
 		// Could be improve by doing cursor pointer
 		return this.appreciates
@@ -53,6 +57,7 @@ class AppreciateService {
 
 	constructor() {
 		this.getByUserId = this.getByUserId.bind(this)
+		this.getById = this.getById.bind(this)
 		this.getAll = this.getAll.bind(this)
 		this.add = this.add.bind(this)
 		this.delete = this.delete.bind(this)
