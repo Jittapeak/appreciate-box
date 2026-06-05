@@ -70,7 +70,7 @@
 				{@render ApprCardMenu(appr.id)}
 			</Card.Title>
 		</Card.Header>
-		<Card.Content class="line-clamp-3">
+		<Card.Content class="line-clamp-3 whitespace-pre-wrap">
 			<p>{appr.text}</p>
 		</Card.Content>
 	</Card.Root>
