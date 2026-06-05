@@ -5,6 +5,10 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
+<svelte:head>
+	<title>Home | Appreciate box</title>
+</svelte:head>
+
 <div class="flex space-x-4 max-h-screen">
 	<section class="max-w-1/2 w-full p-4">
 		<h2 class="text-xl py-4 font-bold">Add your apprecication!</h2>

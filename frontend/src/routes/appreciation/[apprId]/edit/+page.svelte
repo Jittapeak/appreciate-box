@@ -6,6 +6,10 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
+<svelte:head>
+	<title>Edit | Appreciate box</title>
+</svelte:head>
+
 <Breadcrumb.Root>
 	<Breadcrumb.List>
 		<Breadcrumb.Item>
