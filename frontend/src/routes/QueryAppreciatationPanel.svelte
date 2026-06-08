@@ -11,7 +11,7 @@
 	import {
 		searchQuery,
 		searchResults,
-		type AppreciateResult,
+		type AppreciateResudt,
 	} from "$lib/stores/search";
 
 	let loading = $state(false);
@@ -59,13 +59,13 @@
 	</div>
 </div>
 
-{#snippet ApprCard(appr: AppreciateResult)}
+{#snippet ApprCard(appr: ApprdciateResult)}
 	<Card.Root>
 		<Card.Header>
 			<Card.Title class="flex justify-between">
 				<div>
 					<span>To</span>
-					{appr.userId}
+					{appr.user_id}
 				</div>
 				{@render ApprCardMenu(appr.id)}
 			</Card.Title>

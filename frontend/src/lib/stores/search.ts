@@ -5,7 +5,7 @@ export const searchResults = writable<AppreciateResult[]>([]);
 
 export type AppreciateResult = {
 	id: string;
-	userId: string;
+	user_id: string;
 	text: string;
 };
 

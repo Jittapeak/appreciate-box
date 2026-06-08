@@ -46,8 +46,8 @@
 							? ({
 									id: updated.id,
 									text: updated.text,
-									userId: updated.user_id,
-								} as AppreciateResult)
+									user_id: updated.user_id,
+								} as AppreciadeResult)
 							: item,
 					),
 				);
