@@ -3,6 +3,10 @@ import type { Actions, PageServerLoad } from "./$types";
 import { appreciateFormSchema } from "./schema";
 import { zod4 } from "sveltekit-superforms/adapters";
 import { resolve } from '$lib/gqty';
+import { gqlClient } from "$lib/apolloClient";
+import { APPRECIATE_FIELDS } from "$lib/queries/appreciate";
+import type { addApprResponse, UpdateByIdResponse } from "$lib/types";
+import { gql } from "@apollo/client";
 
 
 export const load: PageServerLoad = async () => {
@@ -21,19 +25,42 @@ export const actions: Actions = {
 			});
 		}
 
-		const addAppreciation = await resolve(({
-			mutation }) => {
-			const appr = mutation.addAppreciate({
-				appreciate: {
+
+
+		const createAppr = gql`
+		  mutation CreateAppr($input: AppreciateInsertInput!) {
+		     addAppreciate(appreciate: $input) {
+		      ...AppreciateFields
+		    }
+		  }
+
+		  ${APPRECIATE_FIELDS}
+		`;
+		const apprs = await gqlClient.mutate({
+			mutation: createAppr,
+			variables: {
+				input: {
 					user_id: form.data.user_id,
 					text: form.data.text
-				}
-			})
+				},
+			},
+		});
 
-			return { ...appr }
-		})
+		const data = apprs.data as addApprResponse;
 
-		console.log("Added appreciation to ", addAppreciation.user_id)
+		// const addAppreciation = await resolve(({
+		// 	mutation }) => {
+		// 	const appr = mutation.addAppreciate({
+		// 		appreciate: {
+		// 			user_id: form.data.user_id,
+		// 			text: form.data.text
+		// 		}
+		// 	})
+		//
+		// 	return { ...appr }
+		// })
+
+		console.log("Added appreciation to ", data.addAppreciate.user_id)
 
 		// Call to backend
 		return {

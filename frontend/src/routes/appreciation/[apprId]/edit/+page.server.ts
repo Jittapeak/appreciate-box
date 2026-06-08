@@ -4,25 +4,54 @@ import type { Actions, PageServerLoad } from "./$types";
 import { updateAppreciateFormSchema } from "../../../schema";
 import { zod4 } from "sveltekit-superforms/adapters";
 import { resolve } from '$lib/gqty';
+import { gqlClient } from "$lib/apolloClient";
+import { APPRECIATE_FIELDS } from "$lib/queries/appreciate";
+import type { GetByIdResponse, UpdateAppreciateInput, UpdateByIdResponse } from "$lib/types";
+import { gql } from "@apollo/client";
+import { error } from "@sveltejs/kit";
 
 
 export const load: PageServerLoad = async ({ params }) => {
 
 	const apprId = params.apprId
 
-	let appr = await resolve(({ query }) => {
-		let appr = query.getById({
-			apprId: apprId
-		})
+
+	const getById = gql`
+	  query GetById($id: String!) {
+	     getById(apprId: $id) {
+	      ...AppreciateFields
+	    }
+	  }
+
+	  ${APPRECIATE_FIELDS}
+	`;
+	const apprs = await gqlClient.query({
+		query: getById,
+		variables: {
+			id: apprId,
+		},
+	});
+
+	const data = apprs.data as GetByIdResponse | null;
+	if (!data) {
+		error(404, "Appreciation not found")
+	}
+	console.log(data.getById)
 
 
-		return { ...appr }
-	})
+	// let appr = await resolve(({ query }) => {
+	// 	let appr = query.getById({
+	// 		apprId: apprId
+	// 	})
+	//
+	//
+	// 	return { ...appr }
+	// })
 
 
 	return {
 		form: await superValidate(zod4(updateAppreciateFormSchema)),
-		appr
+		appr: data.getById
 	}
 }
 
@@ -37,24 +66,45 @@ export const actions: Actions = {
 			});
 		}
 
-		const updatedAppreciation = await resolve(({
-			mutation }) => {
-			const appr = mutation.updateAppreciate({
-				appreciate: {
+		const updateAppr = gql`
+		  mutation UpdateAppr($input: AppreciateUpdateInput!) {
+		     updateAppreciate(appreciate: $input) {
+		      ...AppreciateFields
+		    }
+		  }
+
+		  ${APPRECIATE_FIELDS}
+		`;
+		const apprs = await gqlClient.mutate({
+			mutation: updateAppr,
+			variables: {
+				input: {
 					id,
 					text: form.data.text
-				}
-			})
+				},
+			},
+		});
 
-			return { ...appr }
-		})
+		const data = apprs.data as UpdateByIdResponse;
 
-		console.log("Updated appreciation to ", updatedAppreciation.user_id)
 
+		// const updatedAppreciation = await resolve(({
+		// 	mutation }) => {
+		// 	const appr = mutation.updateAppreciate({
+		// 		appreciate: {
+		// 			id,
+		// 			text: form.data.text
+		// 		}
+		// 	})
+		//
+		// 	return { ...appr }
+		// })
+
+		console.log("Updated appreciation to ", data.updateAppreciate.id)
 
 		return {
 			form,
-			updatedAppreciation
+			updatedAppreciation: data.updateAppreciate
 		};
 	},
 };
