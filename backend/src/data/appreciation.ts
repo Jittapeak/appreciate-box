@@ -17,12 +17,13 @@ class AppreciateService {
 		return this.appreciates.filter(appr => appr.user_id == user_id)
 	}
 
-	getById(apprId: string): Appreciate {
-		return this.appreciates.filter(appr => appr.id == apprId)[0]
+	getById(apprId: string): Appreciate | undefined {
+		return this.appreciates.find(appr => appr.id == apprId)
 	}
 
 	getAll(): Appreciate[] {
 		// Could be improve by doing cursor pointer
+		// Pagination (methods)
 		return this.appreciates
 	}
 

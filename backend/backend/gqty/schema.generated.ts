@@ -101,7 +101,7 @@ export const generatedSchema = {
   query: {
     __typename: { __type: "String!" },
     getAllAppreciates: { __type: "[Appreciate!]!" },
-    getById: { __type: "Appreciate!", __args: { apprId: "String!" } },
+    getById: { __type: "Appreciate", __args: { apprId: "String!" } },
     getByUserId: { __type: "[Appreciate!]!", __args: { user_id: "String!" } },
     hello: { __type: "String!" },
   },
@@ -129,7 +129,7 @@ export interface Mutation {
 export interface Query {
   __typename?: "Query";
   getAllAppreciates: Array<Appreciate>;
-  getById: (args: { apprId: ScalarsEnums["String"] }) => Appreciate;
+  getById: (args: { apprId: ScalarsEnums["String"] }) => Maybe<Appreciate>;
   getByUserId: (args: { user_id: ScalarsEnums["String"] }) => Array<Appreciate>;
   hello: ScalarsEnums["String"];
 }
